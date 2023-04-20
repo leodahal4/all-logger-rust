@@ -8,7 +8,7 @@ const SQL_INITIAL: &str = "sql/00-recreate-db.sql";
 pub type DB = Pool<Postgres>;
 
 /// This must only be runned for the first time the db is initialized
-pub async fn init_db(config: &Config) -> Result<DB, sqlx::Error> {
+pub async fn init_db(config: &Config) -> Result<(), Box<dyn std::error::Error>> {
     let mut all_sql: Vec<PathBuf> = fs::read_dir(SQL_DIR)?
         .into_iter()
         .filter_map(|e| e.ok().map(|e| e.path()))
@@ -23,8 +23,7 @@ pub async fn init_db(config: &Config) -> Result<DB, sqlx::Error> {
             first_init(&conn, &sql).await?;
         }
     }
-
-    db_pool(&config).await
+    Ok(())
 }
 
 async fn first_init(db: &DB, file: &str) -> Result<(), sqlx::Error> {
@@ -65,3 +64,7 @@ async fn db_pool(config: &Config) -> Result<DB, sqlx::Error> {
         .connect(&connection_string)
         .await
 }
+
+#[cfg(test)]
+#[path = "../_tests/models_db.rs"]
+mod tests;

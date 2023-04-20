@@ -8,7 +8,7 @@ pub async fn db_connection(config: &crate::Config) -> Result<DB, sqlx::Error> {
         // migrate the db sql files
         // NOTE: THIS SHOULD BE ONLY IN THE DEVELOPMENT MODE,
         // so checking the env for environment
-        if config.production == true {
+        if config.is_prod_env(){
             println!("PRODUCTION SERVER FOUND")
         } else {
             println!("DEVELOPMENT SERVER FOUND")

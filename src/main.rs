@@ -5,6 +5,9 @@ use models::db_connection;
 use dotenv::dotenv;
 use env_reader::Config;
 
+/// The main function is the entry point of the Rust program. 
+/// It loads the environment variables from the .env file, reads the configuration values, 
+/// establishes a database connection using the supplied configuration and prints the connection details.
 #[tokio::main]
 async fn main() {
     dotenv().ok();

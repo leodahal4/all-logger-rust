@@ -1,7 +1,7 @@
 mod models;
 mod env_reader;
 
-use models::db_connection;
+use models::{init_db, db_connection};
 use dotenv::dotenv;
 use env_reader::Config;
 
@@ -11,8 +11,13 @@ use env_reader::Config;
 #[tokio::main]
 async fn main() {
     dotenv().ok();
-
-    let config = env_reader::read_config();
+    let config: Config = env_reader::read_config();
+    {
+        // create the table and populate the dummy data
+        if !config.is_prod_env(){
+            _ = init_db(&config).await;
+        }
+    }
 
     let conn = db_connection(&config).await.expect("db connection cannot be established");
     println!("{:?}", conn);

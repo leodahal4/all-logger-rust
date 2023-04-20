@@ -1,0 +1,19 @@
+syntax = "proto3";
+package protos;
+
+message MessageRequest{
+  string log = 1; // Actual Log
+  bool error = 2; // Is this an error ?
+  int32 priority = 3; // What might be the priority of this log ?
+  bool send = 4; // Should this be directly sent to the developers ?
+  optional string extra = 5; // Anything extra message
+  string subdomain = 6;
+  string appname = 7;
+}
+
+message EmptyResponse{}
+
+service LogSaveService {
+  rpc SaveLog(MessageRequest) returns (EmptyResponse);
+}
+

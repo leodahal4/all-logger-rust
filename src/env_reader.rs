@@ -11,7 +11,10 @@ pub fn read_config() -> Config {
     let db_pass = env::var("db_pass").expect("error reading the db_pass variable");
     let db_name = env::var("db_name").expect("error reading the db_name variable");
 
-    Config { db_host, db_user, db_pass, db_name, env, ..Default::default()}
+    let srv_add = env::var("srv_add").expect("error reading the srv_add variable");
+    let srv_port = env::var("srv_port").expect("error reading the srv_port variable");
+
+    Config { db_host, db_user, db_pass, db_name, env, srv_add, srv_port, ..Default::default()}
 }
 
 
@@ -22,6 +25,10 @@ pub struct Config {
     pub db_pass: String,
     pub db_name: String,
     pub env: String,
+
+    pub srv_add: String,
+    pub srv_port: String,
+
     pub debug: bool,
 }
 
